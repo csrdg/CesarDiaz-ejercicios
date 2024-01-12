@@ -1,13 +1,7 @@
 //!---------------------------------------------------------------------------
 /*
 **Iteración #1: Buscar el máximo**
-
 Completa la función que tomando dos números como argumento devuelva el más alto.
-
-```jsx
-function sum(numberOne, numberTwo) {
-  // insert code
-}
 */
 //!---------------------------------------------------------------------------ESTO VA RARO
 
@@ -30,7 +24,6 @@ console.log("🚀 ~ valorMasAlto:", valorMasAlto);
 //!---------------------------------------------------------------------------
 /*
 **Iteración #2: Buscar la palabra más larga**
-
 Completa la función que tomando un array de strings como argumento devuelva el más largo, 
 en caso de que dos strings tenga la misma longitud deberá devolver el primero.
 */
@@ -45,22 +38,15 @@ const avengers = [
   "Captain M.",
 ];
 
-const findlongestword = (avengers) => {};
-
-/*function findLongestWord(param) {
-  // insert code
-}
-
-
-const findLongestWord = () => {
-  const mayor = avengers[0];
-  for (i = 1; i < avengers.length; i++) {
-    if (avengers[i].length > mayor.lenght) {
-      mayor = avengers[i];
+const findlongestword = () => {
+  const longestWord = avengers[0];
+  for (i = 0; i < avengers.lenght; i++) {
+    if (avengers[i].lenght > longestWord.lenght) {
+      longestWord = avengers[i];
     }
   }
-  return mayor;
+  return longestWord;
 };
 
-console.log(findLongestWord);
-*/
+const palabro = findlongestword();
+console.log(palabro);
