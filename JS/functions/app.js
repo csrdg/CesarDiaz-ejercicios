@@ -111,3 +111,69 @@ const averageWord = (array) => {
 
 const sumMixedElements = averageWord(mixedElements);
 console.log(`La suma de números y total de caracteres es ${sumMixedElements}`);
+
+//!---------------------------------------------------------------------------
+// **Iteración #6: Valores únicos**
+// Crea una función que reciba por parámetro un array y compruebe si existen elementos duplicados,
+// en caso que existan los elimina para retornar un array sin los elementos duplicados.
+//!---------------------------------------------------------------------------NOVAAAAA
+
+const duplicates = [
+  "sushi",
+  "pizza",
+  "burger",
+  "potatoe",
+  "pasta",
+  "ice-cream",
+  "pizza",
+  "chicken",
+  "onion rings",
+  "pasta",
+  "soda",
+];
+
+const eliminaDuplicados = (array) => {
+  let duplicados = "";
+  for (i = 0; i < array.length; i++) {
+    if (array[i] === array[i].length) {
+      duplicados = array[i];
+    }
+  }
+  return array.filter((duplicados) => "" !== duplicados);
+};
+
+const arraySinDuplicados = eliminaDuplicados(duplicates);
+console.log("🚀 ~ arraySinDuplicados:", arraySinDuplicados);
+
+//!---------------------------------------------------------------------------
+// **Iteración #7: Buscador de nombres**
+// Crea una función que reciba por parámetro un array y el valor que desea comprobar que existe
+// dentro de dicho array - comprueba si existe el elemento, en caso que existan nos devuelve un true
+// y la posición de dicho elemento y por la contra un false.
+//!---------------------------------------------------------------------------ESTO TAMPOCO
+
+const nameFinder = [
+  "Peter",
+  "Steve",
+  "Tony",
+  "Natasha",
+  "Clint",
+  "Logan",
+  "Xabier",
+  "Bruce",
+  "Peggy",
+  "Jessica",
+  "Marc",
+];
+
+const findName = (array, name) => {
+  for (i = 0; i < array.length; i++) {
+    if (array[i] === name) {
+      return `El nombre ${name}, existe. Está en la posición ${array[i].length}.`;
+    } else {
+      return `el nombre no existe.`;
+    }
+  }
+};
+const nombreBuscado = findName(nameFinder, "Peggy");
+console.log("🚀 ~ nombreBuscado:", nombreBuscado);
