@@ -139,7 +139,7 @@ const eliminaDuplicados = (array) => {
       duplicados = array[i];
     }
   }
-  return array.filter((duplicados) => "" !== duplicados);
+  return;
 };
 
 const arraySinDuplicados = eliminaDuplicados(duplicates);
@@ -150,7 +150,7 @@ console.log("🚀 ~ arraySinDuplicados:", arraySinDuplicados);
 // Crea una función que reciba por parámetro un array y el valor que desea comprobar que existe
 // dentro de dicho array - comprueba si existe el elemento, en caso que existan nos devuelve un true
 // y la posición de dicho elemento y por la contra un false.
-//!---------------------------------------------------------------------------ESTO TAMPOCO
+//!---------------------------------------------------------------------------falta la posición
 
 const nameFinder = [
   "Peter",
@@ -167,13 +167,30 @@ const nameFinder = [
 ];
 
 const findName = (array, name) => {
-  for (i = 0; i < array.length; i++) {
-    if (array[i] === name) {
-      return `El nombre ${name}, existe. Está en la posición ${array[i].length}.`;
-    } else {
-      return `el nombre no existe.`;
-    }
+  let acc = 0;
+  for (let i = 0; i < array.length; i++) {
+    array[i].toLowerCase().trim() === name.toLowerCase().trim() && acc++;
   }
+  return acc === 0 ? false : true;
 };
-const nombreBuscado = findName(nameFinder, "Peggy");
-console.log("🚀 ~ nombreBuscado:", nombreBuscado);
+const nombreencontrado = findName(nameFinder, "peter");
+console.log("🚀 ~ nombreencontrado:", nombreencontrado);
+
+//!---------------------------------------------------------------------------
+// **Iteration #8: Contador de repeticiones**
+// Crea una función que nos devuelva el número de veces que se repite cada una de las palabras que lo conforma.
+//!---------------------------------------------------------------------------
+
+const counterWords = [
+  "code",
+  "repeat",
+  "eat",
+  "sleep",
+  "code",
+  "enjoy",
+  "sleep",
+  "code",
+  "enjoy",
+  "upgrade",
+  "code",
+];
