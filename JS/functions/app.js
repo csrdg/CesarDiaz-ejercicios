@@ -150,7 +150,7 @@ console.log("🚀 ~ arraySinDuplicados:", arraySinDuplicados);
 // Crea una función que reciba por parámetro un array y el valor que desea comprobar que existe
 // dentro de dicho array - comprueba si existe el elemento, en caso que existan nos devuelve un true
 // y la posición de dicho elemento y por la contra un false.
-//!---------------------------------------------------------------------------POR QUÉ LO LEE AL REVÉS!!
+//!---------------------------------------------------------------------------
 
 const nameFinder = [
   "Peter",
@@ -168,12 +168,16 @@ const nameFinder = [
 
 const findName = (array, name) => {
   let acc = 0;
+  let posicion = 0;
   for (let i = 0; i < array.length; i++) {
-    array[i].toLowerCase().trim() === name.toLowerCase().trim() && acc++;
+    if (array[i].toLowerCase().trim() === name.toLowerCase().trim()) {
+      acc++;
+      posicion = i;
+    }
   }
-  return acc === 0 ? false : true, `Y está en la posición ${i}`;
+  return acc === 0 ? false : true, `Está en la posición ${posicion}`;
 };
-const nombreencontrado = findName(nameFinder, "peter");
+const nombreencontrado = findName(nameFinder, "peggy");
 console.log("🚀 ~ nombreencontrado:", nombreencontrado);
 
 //!---------------------------------------------------------------------------
