@@ -194,3 +194,12 @@ const counterWords = [
   "upgrade",
   "code",
 ];
+
+const accRepeticiones = (array, palabraABuscar) => {
+  let acc = 0;
+  for (let palabra of array) palabra === palabraABuscar && acc++;
+  return acc;
+};
+
+const resultAccRepeticones = accRepeticiones(counterWords, "sleep");
+console.log("🚀 ~ resultAccRepeticones:", resultAccRepeticones);
