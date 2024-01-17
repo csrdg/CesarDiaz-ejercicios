@@ -116,7 +116,7 @@ console.log(`La suma de números y total de caracteres es ${sumMixedElements}`);
 // **Iteración #6: Valores únicos**
 // Crea una función que reciba por parámetro un array y compruebe si existen elementos duplicados,
 // en caso que existan los elimina para retornar un array sin los elementos duplicados.
-//!---------------------------------------------------------------------------NOVAAAAA
+//!---------------------------------------------------------------------------
 
 const duplicates = [
   "sushi",
@@ -133,13 +133,13 @@ const duplicates = [
 ];
 
 const eliminaDuplicados = (array) => {
-  let duplicados = "";
+  let sinDuplicados = [];
   for (i = 0; i < array.length; i++) {
-    if (array[i] === array[i].length) {
-      duplicados = array[i];
+    if (!sinDuplicados.includes(array[i])) {
+      sinDuplicados.push(array[i]);
     }
   }
-  return;
+  return sinDuplicados;
 };
 
 const arraySinDuplicados = eliminaDuplicados(duplicates);
@@ -150,7 +150,7 @@ console.log("🚀 ~ arraySinDuplicados:", arraySinDuplicados);
 // Crea una función que reciba por parámetro un array y el valor que desea comprobar que existe
 // dentro de dicho array - comprueba si existe el elemento, en caso que existan nos devuelve un true
 // y la posición de dicho elemento y por la contra un false.
-//!---------------------------------------------------------------------------falta la posición
+//!---------------------------------------------------------------------------POR QUÉ LO LEE AL REVÉS!!
 
 const nameFinder = [
   "Peter",
@@ -171,7 +171,7 @@ const findName = (array, name) => {
   for (let i = 0; i < array.length; i++) {
     array[i].toLowerCase().trim() === name.toLowerCase().trim() && acc++;
   }
-  return acc === 0 ? false : true;
+  return acc === 0 ? false : true, `Y está en la posición ${i}`;
 };
 const nombreencontrado = findName(nameFinder, "peter");
 console.log("🚀 ~ nombreencontrado:", nombreencontrado);
