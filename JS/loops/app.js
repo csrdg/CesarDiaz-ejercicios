@@ -34,6 +34,24 @@ const alumns = [
   { name: "Raquel Benito", T1: true, T2: true, T3: true },
 ];
 
+const aprobados = (array) => {
+  array.forEach((alumno) => {
+    const { T1, T2, T3 } = alumno;
+    const revisionTrimestres =
+      (!T1 && T2 && T3) ||
+      (T1 && !T2 && T3) ||
+      (T1 && T2 && !T3) ||
+      (T1 && T2 && T3);
+    revisionTrimestres
+      ? (alumno.isApproved = true)
+      : (alumno.isApproved = false);
+  });
+  return array;
+};
+
+const arrayAprobados = aprobados(alumns);
+console.log("🚀 ~ arrayAprobados:", arrayAprobados);
+
 // **Iteración #3: Probando For...of**
 // Usa un bucle forof para recorrer todos los destinos del array. Imprime en un ***console.log*** sus valores.
 
