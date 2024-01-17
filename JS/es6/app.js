@@ -107,3 +107,65 @@ const colors = ["rojo", "azul", "amarillo", "verde", "naranja"];
 const menosColors = [...colors];
 menosColors.splice(2, 1);
 console.log("🚀 ~ menosColors:", menosColors);
+
+// **Iteración #4: Map**
+
+// 4.1 Dado el siguiente array, devuelve un array con sus nombres
+// utilizando .map().
+
+const users = [
+  { id: 1, name: "Abel" },
+  { id: 2, name: "Julia" },
+  { id: 3, name: "Pedro" },
+  { id: 4, name: "Amanda" },
+];
+
+const usersNames = users.map((user, index) => {
+  return {
+    name: user.name,
+  };
+});
+
+console.log(usersNames);
+
+// 4.2 Dado el siguiente array, devuelve una lista que contenga los valores
+// de la propiedad .name y cambia el nombre a 'Anacleto' en caso de que
+// empiece por 'A'.
+
+const usersTwo = [
+  { id: 1, name: "Abel" },
+  { id: 2, name: "Julia" },
+  { id: 3, name: "Pedro" },
+  { id: 4, name: "Amanda" },
+];
+
+const anacletacion = usersTwo.map((user, index) => {
+  if (user.name[0] === "A") user.name = "Anacleto";
+  {
+    return {
+      name: user.name,
+    };
+  }
+});
+
+console.log(anacletacion);
+
+// 4.3 Dado el siguiente array, devuelve una lista que contenga los valores
+// de la propiedad .name y añade al valor de .name el string ' (Visitado)'
+// cuando el valor de la propiedad isVisited = true.
+
+const cities = [
+  { isVisited: true, name: "Tokyo" },
+  { isVisited: false, name: "Madagascar" },
+  { isVisited: true, name: "Amsterdam" },
+  { isVisited: false, name: "Seul" },
+];
+
+const ciudadesVisitadas = cities.map((city, index) => {
+  city.isVisited ? `${city.name} (Visitado)` : `${city.name}`;
+  {
+    return city.name;
+  }
+});
+
+console.log(ciudadesVisitadas);
