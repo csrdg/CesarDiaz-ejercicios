@@ -102,3 +102,42 @@ const findArrayIndex = (array, text) => {
 
 const animalFinder = findArrayIndex(animales, "Salamandra");
 console.log("🚀 ~ animalFinder:", animalFinder);
+
+// **Iteración #5: Función rollDice**
+// Crea una función llamada **rollDice()** que reciba como parametro el numero de caras que queramos
+// que tenga el dado que deberá silumar el codigo dentro de la función.
+// Como hemos dicho, que la función use el parametro para simular una tirada de dado y retornar
+// el resultado. Si no se te ocurre como hacer un numero aleatorio no te preocupes!
+// busca información sobre la función de javascript **Math.random();**
+
+let rollDice = (max) => {
+  return Math.floor(Math.random() * max + 1);
+};
+
+const resultRollDice = rollDice(6);
+console.log("🚀 ~ resultRollDice:", resultRollDice);
+
+// según entiendo el Math.floor se usa para que me entregue un resultado en enteros <= a un numero.
+// el Math.random crea el número aleatorio entre 0 y el max, añado +1 para incluir el max.
+
+// **Iteración #6: Función swap**
+// Crea una función llamada `swap()` que reciba un array y dos parametros que sean indices del array.
+// La función deberá intercambiar la posición de los valores de los indices que hayamos enviado como
+// parametro. Retorna el array resultante.
+
+const posiciones = [
+  "Mesirve",
+  "Cristiano Romualdo",
+  "Fernando Muralla",
+  "Ronalguiño",
+];
+
+const cambiarposiciones = (array, i1, i2) => {
+  const posicion1 = array[i1];
+  const posicion2 = array[i2];
+
+  array[i1] = posicion2;
+  array[i2] = posicion1;
+
+  return array;
+};
