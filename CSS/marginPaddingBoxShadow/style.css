@@ -11,11 +11,14 @@ h1 {
 
 .image-container {
   width: 100%;
+  display: flex;
+  justify-self: center;
 }
 img {
-  
+  box-shadow: rgb(0, 0, 0) 10px, 5px, 5px;
 }
 
 p {
-  
+  padding: 0 10rem ;
+  margin: 4rem 4rem 0 4rem;
 }
