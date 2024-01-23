@@ -218,15 +218,28 @@ const streamersTwo = [
 const strUmers = streamersTwo.filter((streamer) => streamer.name.includes("u"));
 console.log("🚀 ~ strUmers:", strUmers);
 
-//! ----------------------------------------------------------------NO LO VEO
 // 5.5 utiliza .filter() para generar un nuevo array con los streamers que incluyan
 // el caracter 'Legends' en su propiedad .gameMorePlayed. Recomendamos usar la funcion
 // .includes() para la comprobación.
 // Además, pon el valor de la propiedad .gameMorePlayed a MAYUSCULAS cuando
 // .age sea mayor que 35.
 
-// const streamerLegends = streamers.filter((streamer) =>
-//   streamer.gameMorePlayed.includes("Legends")
+const streamerLegends = streamers.filter((streamer) =>
+  streamer.gameMorePlayed.includes("Legends")
+);
+console.log(streamerLegends);
+
+const streamerLegendMayor = streamerLegends.map((streamer) => {
+  return streamer.age > 35
+    ? {
+        ...streamer,
+        gameMorePlayed: streamer.gameMorePlayed.toUpperCase(),
+      }
+    : streamer;
+});
+console.log(streamerLegendMayor);
+
+//! ----------------------------------------------------------------NO LO VEO
 
 // 5.6 Dado el siguiente html y javascript, utiliza .filter() para mostrar por consola
 // los streamers que incluyan la palabra introducida en el input. De esta forma, si
