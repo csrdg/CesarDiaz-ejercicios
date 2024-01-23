@@ -71,13 +71,28 @@ const users = [
   },
 ];
 
-// for (const user of users) {
-//   const mediaVolumePerUser = 0;
-//   for (let sound in user.favoritesSounds) {
-//     const totalsounds = Object.keys(user.favoritesSounds).lenght;
-//     console.log("🚀 ~ totalsounds:", totalsounds);
-//   }
-// }
+const soundVolumeAverage = (users) => {
+  let totalsounds = 0;
+  let totalsoundsVolume = 0;
+
+  for (const user of users) {
+    for (const sound in user.favoritesSounds) {
+      totalsoundsVolume =
+        totalsoundsVolume + user.favoritesSounds[sound].volume;
+      totalsounds++;
+    }
+  }
+  return totalsoundsVolume / totalsounds;
+};
+
+console.log(soundVolumeAverage(users));
+
+// **Iteración #3: Mix Fors**
+// Dado el siguiente javascript usa forof y forin para saber cuantas veces ha sido cada sonido
+// agregado por los usuarios a favorito. Para ello recorre la lista de usuarios y usa forin
+// para recoger el nombre de los sonidos que el usuario tenga como favoritos.
+// Una vez accedas a ellos piensa en la mejor forma de hacer un conteo de cada vez que ese sonido
+// se repita como favorito en cada usuario.
 
 // **Iteración #4: Métodos findArrayIndex**
 // Crea una función llamada `findArrayIndex` que reciba como parametros un array de textos y un texto y
