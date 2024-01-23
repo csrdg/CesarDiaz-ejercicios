@@ -153,7 +153,6 @@ console.log(anacletacion);
 // 4.3 Dado el siguiente array, devuelve una lista que contenga los valores
 // de la propiedad .name y añade al valor de .name el string ' (Visitado)'
 // cuando el valor de la propiedad isVisited = true.
-//!---------------------------------------------------------------------------
 
 const cities = [
   { isVisited: true, name: "Tokyo" },
@@ -386,23 +385,44 @@ const sumAprobadosBien = exams.reduce((acc, exam) => {
 }, 0);
 console.log("🚀 ~ sumAprobadosBien ~ sumAprobadosBien:", sumAprobadosBien);
 
-//! ----------------------------------------------------------------NO LO VEO
 // 7.3 Dado el mismo array, haz la media de las notas de todos los examenes .reduce().
+
+const allExamsAverage = (array) => {
+  let totalScores = array.reduce((acc, el) => acc + el.score, 0);
+  return totalScores / array.length;
+};
+
+const resultAllExamsAverage = console.log(allExamsAverage(exams));
+
+//! ----------------------------------------------------------------NO LO ENTIENDO
 
 // **Iteración #8: Bonus**
 
-// ```jsx
-// 6.1 Dado el siguiente javascript filtra los videojuegos por gender = 'RPG' usando
+// Dado el siguiente javascript filtra los videojuegos por gender = 'RPG' usando
 // .filter() y usa .reduce() para conseguir la media de sus .score.
 // La función .find() también podría ayudarte para el contrar el genero 'RPG' en el
 // array .gender.
 
-// const videogames = [
-//     {name: 'Final Fantasy VII', genders: ['RPG'], score: 9.5},
-//     {name: 'Assasins Creed Valhala', genders: ['Aventura', 'RPG'], score: 4.5},
-//     {name: 'The last of Us 2', genders: ['Acción', 'Aventura'], score: 9.8},
-//     {name: 'Super Mario Bros', genders: ['Plataforma'], score: 8.5},
-//     {name: 'Genshin Impact', genders: ['RPG', 'Aventura'], score: 7.5},
-//     {name: 'Legend of Zelda: Breath of the wild', genders: ['RPG', 'La cosa más puto bonita que he visto nunca'], score: 10},
-// ]
-//! ----------------------------------------------------------------NO LO VEO
+const videogames = [
+  { name: "Final Fantasy VII", genders: ["RPG"], score: 9.5 },
+  { name: "Assasins Creed Valhala", genders: ["Aventura", "RPG"], score: 4.5 },
+  { name: "The last of Us 2", genders: ["Acción", "Aventura"], score: 9.8 },
+  { name: "Super Mario Bros", genders: ["Plataforma"], score: 8.5 },
+  { name: "Genshin Impact", genders: ["RPG", "Aventura"], score: 7.5 },
+  {
+    name: "Legend of Zelda: Breath of the wild",
+    genders: ["RPG", "La cosa más puto bonita que he visto nunca"],
+    score: 10,
+  },
+];
+
+const rpgGames = videogames.filter((videogame) =>
+  videogame.genders.includes("RPG")
+);
+console.log(rpgGames);
+
+const rpgGamesAverageScore = rpgGames.reduce(
+  (acc, videogame) => acc + videogame.score,
+  0
+);
+return rpgGamesAverageScore / rpgGames.length;
