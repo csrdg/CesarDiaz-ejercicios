@@ -29,5 +29,11 @@ console.log("🚀 ~ allPokemon:", allPokemon);
 const allTestMe = document.querySelectorAll("[data-function='testMe']");
 console.log("🚀 ~ allTestMe:", allTestMe);
 
+//los atributos se buscan entre [] y si tienen un valor se mete entre ''
+
 const TestMe3 = document.querySelectorAll("[data-function='testMe']");
 console.log("🚀 ~ allTestMe:", allTestMe[2]);
+
+//se puede buscar directamente en el console.log
+
+console.log(allTestMe[2]);
