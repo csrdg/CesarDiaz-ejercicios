@@ -16,3 +16,18 @@ data-function="testMe".
 
 const showme = document.querySelector(".showme");
 console.log("🚀 ~ showme:", showme);
+
+const pillado = document.querySelector("#pillado");
+console.log("🚀 ~ pillado:", pillado);
+
+const allP = document.querySelectorAll("p");
+console.log("🚀 ~ allP:", allP);
+
+const allPokemon = document.querySelectorAll(".pokemon");
+console.log("🚀 ~ allPokemon:", allPokemon);
+
+const allTestMe = document.querySelectorAll("[data-function='testMe']");
+console.log("🚀 ~ allTestMe:", allTestMe);
+
+const TestMe3 = document.querySelectorAll("[data-function='testMe']");
+console.log("🚀 ~ allTestMe:", allTestMe[2]);
