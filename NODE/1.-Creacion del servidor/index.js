@@ -14,7 +14,6 @@ configCloudinary();
 const PORT = process.env.PORT;
 
 const cors = require("cors");
-const { route } = require("./src/api/routes/User.routes");
 app.use(cors());
 
 app.use(express.json({ limit: "5mb" }));
