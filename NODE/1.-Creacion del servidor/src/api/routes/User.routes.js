@@ -4,6 +4,7 @@ const {
   registerCorto,
   registerWithRedirect,
   sendCode,
+  login,
 } = require("../controllers/User.controllers");
 const express = require("express");
 const User = require("../models/User.model");
@@ -20,5 +21,7 @@ UserRoutes.post(
 );
 
 UserRoutes.post("/register/sendMail/:id", sendCode);
+
+UserRoutes.post("/login", login);
 
 module.exports = UserRoutes;
