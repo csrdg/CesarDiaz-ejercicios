@@ -191,8 +191,10 @@ const registerWithRedirect = async (req, res, next) => {
 
 const sendCode = async (req, res, next) => {
   try {
-    const { id } = req.param;
+    const { id, name } = req.params;
     const userDB = await User.findById(id);
+
+    let confirmationCode = randomCode();
 
     const emailEnv = process.env.EMAIL;
     const password = process.env.PASSWORD;
