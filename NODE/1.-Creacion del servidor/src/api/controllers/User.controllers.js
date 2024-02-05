@@ -362,6 +362,31 @@ const login = async (req, res, next) => {
   }
 };
 
+//!--------------------------------------AUTO LOGIN-------------------------------------------
+
+const autoLogin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const userDB = await User.findOne({ email });
+
+    if (userDB) {
+      if (password == userDB.password) {
+        const token = generateToken(userDB._id, email);
+        return res.status(200).json({
+          user: userDB,
+          token,
+        });
+      } else {
+        return res.status(404).json("Password don't match");
+      }
+    } else {
+      res.status(404).json("User no register");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   registerLargo,
   registerCorto,
@@ -370,4 +395,5 @@ module.exports = {
   resendCode,
   checkNewUser,
   login,
+  autoLogin,
 };

@@ -7,6 +7,7 @@ const {
   login,
   resendCode,
   checkNewUser,
+  autoLogin,
 } = require("../controllers/User.controllers");
 const express = require("express");
 const User = require("../models/User.model");
@@ -29,5 +30,7 @@ UserRoutes.post("/login", login);
 UserRoutes.post("/resendCode", resendCode);
 
 UserRoutes.post("/verificationCode", checkNewUser);
+
+UserRoutes.post("/login/autoLogin", autoLogin);
 
 module.exports = UserRoutes;
