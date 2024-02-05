@@ -289,6 +289,54 @@ const resendCode = async (req, res, next) => {
   }
 };
 
+//!--------------------------------------VERIFICATION CODE-------------------------------------------
+
+const checkNewUser = async (req, res, next) => {
+  try {
+    const { email, confirmationCode } = req.body;
+
+    const userExists = await User.findOne({ email });
+    if (!userExists) {
+      return res.status(404).json("User not found");
+    } else {
+      if (confirmationCode === userExists.confirmationCode) {
+        try {
+          await userExists.updateOne({ check: true });
+
+          // test de que el check a sido actualizado
+          const updateUser = await User.findOne({ email });
+          return res
+            .status(200)
+            .json({ testCheckOk: updateUser.check == true ? true : false });
+        } catch (error) {
+          return res.status(404).json(error.message);
+        }
+      } else {
+        try {
+          await User.findByIdAndDelete(userExists._id);
+
+          deleteImgCloudinary(userExists.image);
+
+          //Test de la correcta eliminacion de usuario al no verificar su código. Esto es una medida de seguridad ante bots por ejemplo.
+          return res.status(200).json({
+            userExists,
+            check: false,
+            delete: (await User.findById(userExists._id))
+              ? "Error delete user"
+              : "Ok delete user",
+          });
+        } catch (error) {
+          return res
+            .status(404)
+            .json(error.message || "Error general delete user");
+        }
+      }
+    }
+  } catch (error) {
+    return next(setError(500, error.message || "General error check code"));
+  }
+};
+
 //!--------------------------------------LOGIN-------------------------------------------
 
 const login = async (req, res, next) => {
@@ -320,5 +368,6 @@ module.exports = {
   sendCode,
   registerWithRedirect,
   resendCode,
+  checkNewUser,
   login,
 };
