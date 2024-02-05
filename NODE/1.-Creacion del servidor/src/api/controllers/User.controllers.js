@@ -15,6 +15,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const { generateToken } = require("../../utils/token");
+const setError = require("../../helpers/handle.error");
 
 const registerLargo = async (req, res, next) => {
   let catchImg = req.file?.path;
@@ -240,6 +241,54 @@ const sendCode = async (req, res, next) => {
   }
 };
 
+//!--------------------------------------RESEND CODE-------------------------------------------
+
+const resendCode = async (req, res, next) => {
+  try {
+    const email = process.env.EMAIL;
+    const password = process.env.PASSWORD;
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: email,
+        pass: password,
+      },
+      tls: {
+        // AÑADIR ESTA PARTE PARA QUE FUCNCIONES
+        rejectUnauthorized: false,
+      },
+    });
+
+    const userExist = await User.findOne({ email: req.body.email });
+    if (userExist) {
+      const mailOptions = {
+        from: email,
+        to: req.body.email,
+        subject: "Confirmation code",
+        text: `Tu código es ${userExist.confirmationCode}`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          return res.status(404).json({
+            resend: false,
+          });
+        } else {
+          console.log("Email sent: " + info.response);
+          return res.status(200).json({
+            resend: true,
+          });
+        }
+      });
+    } else {
+      return res.status(404).json("User not found");
+    }
+  } catch (error) {
+    return next(setError(500, error.message || "Error general send code"));
+  }
+};
+
 //!--------------------------------------LOGIN-------------------------------------------
 
 const login = async (req, res, next) => {
@@ -270,5 +319,6 @@ module.exports = {
   registerCorto,
   sendCode,
   registerWithRedirect,
+  resendCode,
   login,
 };
