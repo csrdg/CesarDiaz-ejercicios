@@ -469,6 +469,45 @@ const sendPassword = async (req, res, next) => {
   }
 };
 
+//!--------------------------------------CHANGE PASSWORD POST-LOGIN-------------------------------------------
+// se necesitará req.user que se crea en un middleware, ese necesitará la parte de verificación de token que faltaba en el util token.
+
+const modifyPassword = async (req, res, next) => {
+  console.log("req.user", req.user);
+
+  try {
+    const { password, newPassword } = req.body;
+    const { _id } = req.user;
+
+    if (bcrypt.compareSync(password, req.user.password)) {
+      const newPasswordHashed = bcrypt.hashSync(newPassword, 10);
+
+      //actualización de contraseña en MongoDB
+      try {
+        await User.findByIdAndUpdate(_id, { password: newPasswordHashed });
+
+        //test en tiempo real
+        const userUpdate = await User.findById(_id);
+        if (bcrypt.compareSync(newPassword, userUpdate.password)) {
+          return res.status(200).json({
+            updateUser: true,
+          });
+        } else {
+          return res.status(404).json({
+            updateUser: false,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json(error.message);
+      }
+    } else {
+      return res.status(404).json("Password don't match");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   registerLargo,
   registerCorto,
@@ -480,4 +519,5 @@ module.exports = {
   autoLogin,
   changePassword,
   sendPassword,
+  modifyPassword,
 };

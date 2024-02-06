@@ -9,4 +9,11 @@ const generateToken = (id, email) => {
   return jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-module.exports = { generateToken };
+const verifyToken = (token) => {
+  if (!token) {
+    throw new Error("Token is missing");
+  }
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
+
+module.exports = { generateToken, verifyToken };

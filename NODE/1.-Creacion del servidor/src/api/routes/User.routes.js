@@ -1,3 +1,4 @@
+const { isAuth } = require("../../middleware/auth.middleware");
 const { upload } = require("../../middleware/files.middleware");
 const {
   registerLargo,
@@ -10,6 +11,7 @@ const {
   autoLogin,
   sendPassword,
   changePassword,
+  modifyPassword,
 } = require("../controllers/User.controllers");
 const express = require("express");
 const User = require("../models/User.model");
@@ -39,5 +41,9 @@ UserRoutes.patch("/forgotPassword", changePassword); // son modificaciones parci
 UserRoutes.post("/register/sendMail/:id", sendCode);
 
 UserRoutes.patch("/sendPassword/:id", sendPassword);
+
+// ------------------- endPoints con Auth -----------------------------
+
+UserRoutes.patch("/changePassword", [isAuth], modifyPassword);
 
 module.exports = UserRoutes;
