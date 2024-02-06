@@ -8,6 +8,8 @@ const {
   resendCode,
   checkNewUser,
   autoLogin,
+  sendPassword,
+  changePassword,
 } = require("../controllers/User.controllers");
 const express = require("express");
 const User = require("../models/User.model");
@@ -23,8 +25,6 @@ UserRoutes.post(
   registerWithRedirect
 );
 
-UserRoutes.post("/register/sendMail/:id", sendCode);
-
 UserRoutes.post("/login", login);
 
 UserRoutes.post("/resendCode", resendCode);
@@ -32,5 +32,12 @@ UserRoutes.post("/resendCode", resendCode);
 UserRoutes.post("/verificationCode", checkNewUser);
 
 UserRoutes.post("/login/autoLogin", autoLogin);
+
+UserRoutes.patch("/forgotPassword", changePassword); // son modificaciones parciales de objeto, por eso el PATCH
+
+// ------------------- Rutas de redirect -----------------------------
+UserRoutes.post("/register/sendMail/:id", sendCode);
+
+UserRoutes.patch("/sendPassword/:id", sendPassword);
 
 module.exports = UserRoutes;

@@ -16,6 +16,7 @@ dotenv.config();
 
 const { generateToken } = require("../../utils/token");
 const setError = require("../../helpers/handle.error");
+const randomPassword = require("../../utils/randomPassword");
 
 const registerLargo = async (req, res, next) => {
   let catchImg = req.file?.path;
@@ -387,6 +388,87 @@ const autoLogin = async (req, res, next) => {
   }
 };
 
+//!--------------------------------------CHANGE PASSWORD PRE-LOGIN-------------------------------------------
+
+const changePassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    console.log(req.body);
+    const userDB = await User.findOne({ email });
+    if (userDB) {
+      const PORT = process.env.PORT;
+      return res.redirect(
+        307,
+        `http://localhost:${PORT}/api/v1/users/sendPassword/${userDB._id}`
+      );
+    } else {
+      return res.status(404).json("User no register");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const sendPassword = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userDB = await User.findById(id);
+    const email = process.env.EMAIL;
+    const password = process.env.PASSWORD;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: email,
+        pass: password,
+      },
+      tls: {
+        // AÑADIR ESTA PARTE PARA QUE FUCNCIONES
+        rejectUnauthorized: false,
+      },
+    });
+    let passwordSecure = randomPassword();
+    console.log(passwordSecure);
+    const mailOptions = {
+      from: email,
+      to: userDB.email,
+      subject: "------",
+      text: `User: ${userDB.name}. Your new login code is ${passwordSecure}. Hemos enviado esto porque tenemos una solicitud de cambio de contraseña, si no has sido tú, ponte en contacto con nosotros, gracias.`,
+    };
+    transporter.sendMail(mailOptions, async function (error, info) {
+      if (error) {
+        console.log(error);
+        return res.status(404).json("don't send email and don't update user");
+      } else {
+        console.log("Email sent: " + info.response);
+        const newPasswordBcrypt = bcrypt.hashSync(passwordSecure, 10);
+
+        try {
+          await User.findByIdAndUpdate(id, { password: newPasswordBcrypt });
+
+          // test de que la contraseña ha sido actualizada
+          const userUpdatePassword = await User.findById(id);
+          if (bcrypt.compareSync(passwordSecure, userUpdatePassword.password)) {
+            return res.status(200).json({
+              updateUser: true,
+              sendPassword: true,
+            });
+          } else {
+            return res.status(404).json({
+              updateUser: false,
+              sendPassword: true,
+            });
+          }
+        } catch (error) {
+          return res.status(404).json(error.message);
+        }
+      }
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   registerLargo,
   registerCorto,
@@ -396,4 +478,6 @@ module.exports = {
   checkNewUser,
   login,
   autoLogin,
+  changePassword,
+  sendPassword,
 };
