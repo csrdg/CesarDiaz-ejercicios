@@ -13,6 +13,7 @@ const {
   changePassword,
   modifyPassword,
   update,
+  deleteUser,
 } = require("../controllers/User.controllers");
 const express = require("express");
 const User = require("../models/User.model");
@@ -49,5 +50,7 @@ UserRoutes.patch("/changePassword", [isAuth], modifyPassword);
 
 // se usa /update/update para que no se confunda al compartir el mismo metodo con otras rutas y ser un nombre corto
 UserRoutes.patch("/update/update", [isAuth], upload.single("image"), update);
+
+UserRoutes.delete("/", [isAuth], deleteUser);
 
 module.exports = UserRoutes;
