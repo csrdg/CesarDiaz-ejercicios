@@ -12,6 +12,7 @@ const {
   sendPassword,
   changePassword,
   modifyPassword,
+  update,
 } = require("../controllers/User.controllers");
 const express = require("express");
 const User = require("../models/User.model");
@@ -45,5 +46,8 @@ UserRoutes.patch("/sendPassword/:id", sendPassword);
 // ------------------- endPoints con Auth -----------------------------
 
 UserRoutes.patch("/changePassword", [isAuth], modifyPassword);
+
+// se usa /update/update para que no se confunda al compartir el mismo metodo con otras rutas y ser un nombre corto
+UserRoutes.patch("/update/update", [isAuth], upload.single("image"), update);
 
 module.exports = UserRoutes;

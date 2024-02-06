@@ -17,6 +17,7 @@ dotenv.config();
 const { generateToken } = require("../../utils/token");
 const setError = require("../../helpers/handle.error");
 const randomPassword = require("../../utils/randomPassword");
+const enumOk = require("../../utils/enumOk");
 
 const registerLargo = async (req, res, next) => {
   let catchImg = req.file?.path;
@@ -508,6 +509,100 @@ const modifyPassword = async (req, res, next) => {
   }
 };
 
+//!-------------------------------------- UPDATE -------------------------------------------
+
+const update = async (req, res, next) => {
+  let catchImg = req.file?.patch;
+
+  try {
+    await User.syncIndexes();
+
+    // se crea una nueva instancia del modelo despues de actualizar los elementos unique(indexes) del modelo
+
+    const patchUser = new User(req.body);
+
+    // si hay imagen, se captura y se mete en la instancia
+    req.file && (patchUser.image = catchImg);
+
+    // se especifican las claves que no permitiré cambia al usuario y me quedo con lo que tengo
+    patchUser._id = req.user._id;
+    patchUser.password = req.user.password;
+    patchUser.rol = req.user.rol;
+    patchUser.confirmationCode = req.user.confirmationCode;
+    patchUser.email = req.user.email;
+    patchUser.check = req.user.check;
+    // para las claves enum se tiene que crear una función que recorra su array y muestre las opciones permitidas.
+    // Es un util. Se usa en una condicional que revisa si lo que me da el usuario en el body coincide con los
+    // valores permitidos en el array. Si está, cambio el genero, sino, me quedo con lo que tenia
+
+    if (req.body?.gender) {
+      const resultEnum = enumOk(req.body?.gender);
+      patchUser.gender = resultEnum.check ? req.body?.gender : req.user.gender;
+    }
+
+    try {
+      // se actualizan las claves. Se encuentra el userById y se da la info para el Update
+      await User.findByIdAndUpdate(req.user._id, patchUser);
+
+      // Si hay imagen se tiene que borrar la anterior
+      if (req.file) deleteImgCloudinary(req.user.image);
+
+      // Se testea en RunTime
+
+      const updateUser = await User.findById(req.user._id);
+
+      // se usa Object.keys para sacar a las claves del objeto del req.body, para saber qué claves ha pedido actualizar
+      const updateKeys = Object.keys(req.body);
+
+      // se crea un array vacio para guardar los test
+      const testUpdate = [];
+
+      // se recorre este array para saber si las claves se han actualizado
+      updateKeys.forEach((item) => {
+        // con los [] accedemos al valor dentro de la clave
+        if (updateUser[item] === req.body[item]) {
+          // si lo que me dan es diferente de lo que tenia, le digo al user que ese item se ha actualizado,
+          // si lo que me dan es igual a lo que tenia, le digo al user que esa info es igual a la que había.
+          if (updateUser[item] != req.user[item]) {
+            testUpdate.push({
+              [item]: true,
+            });
+          } else {
+            testUpdate.push({
+              [item]: "same old info",
+            });
+          }
+        } else {
+          testUpdate.push({
+            [item]: false,
+          });
+        }
+      });
+
+      // Para la imagen se hace diferente porque va por req.file, no por req.body como las anteiores claves.
+      // solo se puede valorar si hay o no imagen
+
+      if (req.file) {
+        updateUser.image === catchImg
+          ? testUpdate.push({ image: true })
+          : testUpdate.push({ image: false });
+      }
+
+      return res.status(200).json({
+        updateUser,
+        testUpdate,
+      });
+      // si llega a haber error en la actualización se tiene que borrar la imagen subida.
+    } catch (error) {
+      if (req.file) deleteImgCloudinary(catchImg);
+      return res.status(404).json(error.message);
+    }
+  } catch (error) {
+    if (req.file) deleteImgCloudinary(catchImg);
+    return next(error);
+  }
+};
+
 module.exports = {
   registerLargo,
   registerCorto,
@@ -520,4 +615,5 @@ module.exports = {
   changePassword,
   sendPassword,
   modifyPassword,
+  update,
 };
