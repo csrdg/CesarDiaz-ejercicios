@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const FlyerSchema = new Schema(
   {
-    name: { type: String, required: false, trim: true },
+    name: { type: String, required: true, trim: true, unique: true },
     training: {
       type: String,
       enum: [
@@ -20,8 +20,10 @@ const FlyerSchema = new Schema(
       required: false,
     },
     image: { type: String, required: false },
-    timeAccount: [{ type: mongoose.Schema.Types.ObjectId, ref: "TimeAccount" }],
-    activeFlyer: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    timeAccounts: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "TimeAccount" },
+    ],
+    activeFlyers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,
