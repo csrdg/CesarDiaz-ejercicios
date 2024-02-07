@@ -44,6 +44,8 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    timeSells: [{ type: mongoose.Schema.Types.ObjectId, ref: "TimeAccount" }],
+    students: [{ type: mongoose.Schema.Types.ObjectId, ref: "Flyer" }],
   },
   {
     timestamps: true,

@@ -23,7 +23,7 @@ const FlyerSchema = new Schema(
     timeAccounts: [
       { type: mongoose.Schema.Types.ObjectId, ref: "TimeAccount" },
     ],
-    activeFlyers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    coaches: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,

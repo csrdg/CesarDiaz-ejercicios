@@ -6,7 +6,7 @@ const TimeAccountSchema = new mongoose.Schema(
     minConsumed: { type: Number, required: false },
     minAvailable: { type: Number, required: false },
     flyers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Flyer" }],
-    activeFlyers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    coaches: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,

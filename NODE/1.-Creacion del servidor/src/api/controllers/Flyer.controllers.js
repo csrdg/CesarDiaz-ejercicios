@@ -1,6 +1,7 @@
 const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const Flyer = require("../models/Flyer.model");
 const TimeAccount = require("../models/TimeAccount.model");
+const User = require("../models/User.model");
 
 const createFlyer = async (req, res, next) => {
   let catchImg = req.file?.path;
@@ -112,4 +113,110 @@ const toggleTimeAccount = async (req, res, next) => {
   }
 };
 
-module.exports = { createFlyer, toggleTimeAccount };
+//! ---------------------------- GET BY NAME --------------------------------------------
+// devuelve un array de todos los elementos que coincidan con el "name"
+
+const getByName = async (req, res, next) => {
+  try {
+    const { name } = req.params;
+    const flyerByName = await Flyer.find({ name });
+    if (flyerByName.length > 0) {
+      return res.status(200).json(flyerByName);
+    } else {
+      return res.status(404).json("name not found");
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: "Catch error finding by name",
+      message: error.message,
+    });
+  }
+};
+
+//! ---------------------------- GET ALL --------------------------------------------
+// devuelve un array todos los elementos de ese modelo que existan en la base de datos
+
+const getAll = async (req, res, next) => {
+  try {
+    const allFlyers = await Flyer.find().populate("timeAccounts"); // puedo agragar o quitar el populate, en función de si necesito ver o no lo que hay dentro de ese array
+    if (allFlyers.length > 0) {
+      return res.status(200).json(allFlyers);
+    } else {
+      return res.status(404).json("Flyers not found");
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: "Catch error finding All Flyers",
+      message: error.message,
+    });
+  }
+};
+
+//! ---------------------------- GET BY ID --------------------------------------------
+// Solo devuelve un endpoint buscado por su id
+
+const getById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const flyerById = await Flyer.findById(id);
+    if (flyerById) {
+      return res.status(200).json(flyerById);
+    } else {
+      return res.status(404).json("Flyer id not found");
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: "Catch error finding flyer by id",
+      message: error.message,
+    });
+  }
+};
+
+//! ---------------------------- DELETE --------------------------------------------
+
+const deleteFlyer = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const flyer = await Flyer.findByIdAndDelete(id);
+    // se hace el test para asegurarse de la eliminación completa
+    if (flyer) {
+      const findFlyerById = await Flyer.findById(id);
+
+      try {
+        const test = await TimeAccount.updateMany(
+          { flyers: id },
+          { $pull: { flyers: id } }
+        );
+        console.log(test);
+
+        try {
+          await User.updateMany({ students: id }, { $pull: { students: id } });
+
+          return res
+            .status(findFlyerById ? 404 : 200)
+            .json({ deleteTest: findFlyerById ? false : true });
+        } catch (error) {
+          return res.status(404).json({
+            error: "Catch error update User",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "Catch error update Time Account",
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+module.exports = {
+  createFlyer,
+  toggleTimeAccount,
+  getAll,
+  getById,
+  getByName,
+  deleteFlyer,
+};
