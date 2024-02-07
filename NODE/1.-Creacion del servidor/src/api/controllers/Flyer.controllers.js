@@ -1,4 +1,5 @@
 const { deleteImgCloudinary } = require("../../middleware/files.middleware");
+const enumOk = require("../../utils/enumOk");
 const Flyer = require("../models/Flyer.model");
 const TimeAccount = require("../models/TimeAccount.model");
 const User = require("../models/User.model");
@@ -212,6 +213,78 @@ const deleteFlyer = async (req, res, next) => {
   }
 };
 
+//! ---------------------------- UPDATE --------------------------------------------
+
+const update = async (req, res, next) => {
+  await Flyer.syncIndexes();
+  let catchImg = req.file?.patch;
+  try {
+    const { id } = req.params;
+    const flyerById = await Flyer.findById(id);
+    if (flyerById) {
+      const oldImg = flyerById.image;
+
+      const customBody = {
+        _id: flyerById._id,
+        image: req.file?.path ? catchImg : oldImg,
+        name: req.body?.name ? req.body?.name : flyerById.name,
+      };
+
+      if (req.body?.trainig) {
+        const resultEnum = enumOk(req.body?.trainig);
+        customBody.training = resultEnum.check
+          ? req.body?.training
+          : flyerById.training;
+      }
+      try {
+        await Flyer.findByIdAndUpdate(id, customBody);
+        if (req.file?.path) {
+          deleteImgCloudinary(oldImg);
+        }
+
+        //TEST
+        const flyerByIdUpdate = await Flyer.findById(id);
+        const elementUpdate = Object.keys(req.body);
+        let test = {};
+
+        elementUpdate.forEach((item) => {
+          if (req.body[item] === flyerByIdUpdate[item]) {
+            test[item] = true;
+          } else {
+            test[item] = false;
+          }
+        });
+        // se hace por separado para la imagen por no venir del body sino del file
+        if (catchImg) {
+          flyerByIdUpdate.image === catchImg
+            ? (test = { ...test, file: true })
+            : (test = { ...test, file: false });
+        }
+        // si no hay ninguna en false, nada ha cambiado, no hay actualización, 404 : 200
+        let acc = 0;
+        for (clave in test) {
+          test[clave] == false && acc++;
+        }
+        if (acc > 0) {
+          return res.status(404).json({
+            dataTest: test,
+            update: false,
+          });
+        } else {
+          return res.status(200).json({
+            dataTest: test,
+            update: true,
+          });
+        }
+      } catch (error) {}
+    } else {
+      return res.status(404).json("Flyer not found");
+    }
+  } catch (error) {
+    return res.status(404).json(error);
+  }
+};
+
 module.exports = {
   createFlyer,
   toggleTimeAccount,
@@ -219,4 +292,5 @@ module.exports = {
   getById,
   getByName,
   deleteFlyer,
+  update,
 };

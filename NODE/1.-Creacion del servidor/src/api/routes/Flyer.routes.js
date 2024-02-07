@@ -6,6 +6,7 @@ const {
   getAll,
   getById,
   deleteFlyer,
+  update,
 } = require("../controllers/Flyer.controllers");
 
 const FlyerRoutes = require("express").Router();
@@ -19,5 +20,7 @@ FlyerRoutes.get("/getAll", getAll);
 FlyerRoutes.get("/getById/:id", getById);
 
 FlyerRoutes.delete("/:id", deleteFlyer);
+
+FlyerRoutes.patch("/update/:id", upload.single("image"), update);
 
 module.exports = FlyerRoutes;
