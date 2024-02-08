@@ -5,6 +5,7 @@ const {
   getAll,
   getById,
   deleteTimeAccount,
+  update,
 } = require("../controllers/TimeAccount.controllers");
 
 const TimeAccountRoutes = require("express").Router();
@@ -18,5 +19,7 @@ TimeAccountRoutes.get("/getAll", getAll);
 TimeAccountRoutes.get("/getById/:id", getById);
 
 TimeAccountRoutes.delete("/:id", deleteTimeAccount);
+
+TimeAccountRoutes.patch("/update/:id", update);
 
 module.exports = TimeAccountRoutes;

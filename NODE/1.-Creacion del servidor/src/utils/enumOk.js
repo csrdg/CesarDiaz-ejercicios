@@ -10,6 +10,8 @@ const enumTraining = [
 ];
 
 const enumOk = (array, word) => {
+  console.log(array, word);
+
   switch (array) {
     case "enumGender":
       if (enumGender.includes(word)) {
@@ -22,6 +24,7 @@ const enumOk = (array, word) => {
       }
       break;
     case "enumTraining":
+      console.log(array, word);
       if (enumTraining.includes(word)) {
         console.log("entro en el true");
         return { check: true, word };

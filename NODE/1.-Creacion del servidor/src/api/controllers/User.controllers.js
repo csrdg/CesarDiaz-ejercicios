@@ -536,7 +536,7 @@ const update = async (req, res, next) => {
     // valores permitidos en el array. Si está, cambio el genero, sino, me quedo con lo que tenia
 
     if (req.body?.gender) {
-      const resultEnum = enumOk(req.body?.gender);
+      const resultEnum = enumOk("enumGender", req.body?.gender);
       patchUser.gender = resultEnum.check ? req.body?.gender : req.user.gender;
     }
 

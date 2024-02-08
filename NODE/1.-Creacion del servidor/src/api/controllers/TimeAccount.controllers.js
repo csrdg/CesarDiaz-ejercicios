@@ -112,9 +112,9 @@ const toggleFlyer = async (req, res, next) => {
 const getByMinPayed = async (req, res, next) => {
   try {
     const { minPayed } = req.params;
-    const timeAccountByPayed = await TimeAccount.find({ minPayed });
-    if (timeAccountByPayed === minPayed) {
-      return res.status(200).json(timeAccountByPayed);
+    await TimeAccount.findOne({ minPayed }); // estoy comparando consas diferentes.
+    if (minPayed) {
+      return res.status(200).json(minPayed);
     } else {
       return res.status(404).json("time account not found");
     }
@@ -208,6 +208,67 @@ const deleteTimeAccount = async (req, res, next) => {
   }
 };
 
+//! ---------------------------- UPDATE --------------------------------------------
+
+const update = async (req, res, next) => {
+  await TimeAccount.syncIndexes();
+
+  try {
+    const { id } = req.params;
+    const timeAccountById = await TimeAccount.findById(id);
+    if (timeAccountById) {
+      const customBody = {
+        _id: timeAccountById._id,
+        minPayed: req.body?.minPayed
+          ? req.body?.minPayed
+          : timeAccountById.minPayed,
+        minConsumed: req.body?.minConsumed
+          ? req.body?.minConsumed
+          : timeAccountById.minConsumed,
+        // Pendiente mirar como haría para el resultado de minAvailable ya que depende de los otros y de la no exista de alguno. if? trycatch?
+      };
+
+      try {
+        await TimeAccount.findByIdAndUpdate(id, customBody);
+
+        //TEST
+        const timeByIdUpdate = await TimeAccount.findById(id);
+        const elementUpdate = Object.keys(req.body);
+        let test = {};
+
+        elementUpdate.forEach((item) => {
+          if (req.body[item] === timeByIdUpdate[item]) {
+            test[item] = true;
+          } else {
+            test[item] = false;
+          }
+        });
+
+        // si no hay ninguna en false, nada ha cambiado, no hay actualización, 404 : 200
+        let acc = 0;
+        for (clave in test) {
+          test[clave] == false && acc++;
+        }
+        if (acc > 0) {
+          return res.status(404).json({
+            dataTest: test,
+            update: false,
+          });
+        } else {
+          return res.status(200).json({
+            dataTest: test,
+            update: true,
+          });
+        }
+      } catch (error) {}
+    } else {
+      return res.status(404).json("Time account not found");
+    }
+  } catch (error) {
+    return res.status(404).json(error);
+  }
+};
+
 module.exports = {
   createTimeAccount,
   toggleFlyer,
@@ -215,4 +276,5 @@ module.exports = {
   getById,
   getByMinPayed,
   deleteTimeAccount,
+  update,
 };

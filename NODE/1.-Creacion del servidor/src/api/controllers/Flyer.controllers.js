@@ -230,8 +230,8 @@ const update = async (req, res, next) => {
         name: req.body?.name ? req.body?.name : flyerById.name,
       };
 
-      if (req.body?.trainig) {
-        const resultEnum = enumOk(req.body?.trainig);
+      if (req.body?.training) {
+        const resultEnum = enumOk("enumTraining", req.body?.training);
         customBody.training = resultEnum.check
           ? req.body?.training
           : flyerById.training;
