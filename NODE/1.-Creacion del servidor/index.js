@@ -29,6 +29,9 @@ app.use("/api/v1/flyers/", FlyerRoutes);
 const TimeAccountRoutes = require("./src/api/routes/TimeAccount.routes");
 app.use("/api/v1/timeAccounts/", TimeAccountRoutes);
 
+const MessageRoutes = require("./src/api/routes/Message.routes");
+app.use("/api/v1/messages/", MessageRoutes);
+
 app.use("*", (req, res, next) => {
   const error = new Error("Route not found");
   error.status = 404;
