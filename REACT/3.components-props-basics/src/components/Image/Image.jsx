@@ -1,9 +1,15 @@
-const Image = () => {
-    return (
-        
-            <img src="https://res.cloudinary.com/deck6wgqf/image/upload/v1706567808/emojipng.com-2673013_rweh7q.png" alt="itsfine" />
-       
-    )
-}
+const Image = ({ imageProp }) => {
+  return (
+    <>
+      <p>Image from props</p>
+      <img
+        src={imageProp.src}
+        alt={imageProp.alt}
+        width={imageProp.style.width}
+        height={imageProp.style.height}
+      />
+    </>
+  );
+};
 
-export default Image
+export default Image;
