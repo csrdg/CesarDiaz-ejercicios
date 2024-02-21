@@ -1,0 +1,5 @@
+#homeContainer {
+    min-height: 65vh;
+    /*coincide con el del main que será donde se renderizará*/
+    width: 100vw;
+}
