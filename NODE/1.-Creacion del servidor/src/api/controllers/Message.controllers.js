@@ -61,9 +61,10 @@ const createMessage = async (req, res, next) => {
                     .json("Error update chat. Message deleted");
                 } catch (error) {
                   // falla miserablemente
-                  return res
-                    .status(404)
-                    .json("Error update chat. Error deleting message");
+                  return res.status(404).json({
+                    idCommentNotDeleted: newMessage._id,
+                    error: "Error update chat. Error deleting message",
+                  });
                 }
               }
             } else if (chatExistTwo) {
@@ -144,3 +145,55 @@ const createMessage = async (req, res, next) => {
 };
 
 module.exports = { createMessage };
+
+//! ----------------------------------------- POR SI TODO SE JODE EN BANCO DE TIEMPO -----------
+
+// } else if (type == "public") {
+//   // --------------------------------mensaje publico se convierte en review --------------------------
+//   try {
+//     await User.findByIdAndUpdate(req.user._id, {
+//       $push: {
+//         reviwedForYou: newMessage._id, //----------------> Añadir reviewedForYou en User.model con ref "Message"
+//       },
+//     });
+//     try {
+//       await User.findByIdAndUpdate(idRecipient, {
+//         $push: {
+//           reviewedByOthers: newMessage._id, //----------------> Añadir reviewedByOthers en User.model con ref "Message"
+//         },
+//       });
+
+//       return res.status(200).json({
+//         userReviewer: await User.findById(req.user._id).populate([
+//           {
+//             path: "reviews",
+//             model: Review,
+//             populate: "reviews UserOne UserTwo",
+//           },
+//         ]),
+//         userReviewed: await User.findById(idRecipient),
+//         review: newMessage._id,
+//       });
+//     } catch (error) {
+//       return res.status(404).json({
+//         error: "Catch error updating reviewed by others",
+//         message: error.message,
+//       });
+//     }
+//   } catch (error) {
+//     return res.status(404).json({
+//       error: "Catch error updating reviewed for you",
+//       message: error.message,
+//     });
+//   }
+// } else {
+//   await Message.findByIdAndDelete(savedMessage._id);
+//   return res.status(404).json(error.message);
+// }
+// }
+// } catch (error) {
+// return res.status(404).json({ error: "zopenca", message: error.message });
+// }
+// };
+
+// module.exports = { createMessage };

@@ -198,6 +198,7 @@ const deleteFlyer = async (req, res, next) => {
             .json({ deleteTest: findFlyerById ? false : true });
         } catch (error) {
           return res.status(404).json({
+            // esta es la forma ideal de capturar un error. error: especificar de donde sale. message: error.message: dará contenido explicando el error.
             error: "Catch error update User",
             message: error.message,
           });

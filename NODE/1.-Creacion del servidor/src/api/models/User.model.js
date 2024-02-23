@@ -46,6 +46,9 @@ const UserSchema = new mongoose.Schema(
     },
     timeSells: [{ type: mongoose.Schema.Types.ObjectId, ref: "TimeAccount" }],
     students: [{ type: mongoose.Schema.Types.ObjectId, ref: "Flyer" }],
+    // postedMessage: clave creada para funcionar de apoyo. Si Chat, que es la funcional y la que se usa de normal
+    // para que el front funcione, es eliminada, siempre podemos recurrir a postedMessage para reconstruir chat,
+    // ya que tendrá guardados los mensajes. Es backup
   },
   {
     timestamps: true,

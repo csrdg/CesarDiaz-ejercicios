@@ -394,8 +394,6 @@ const allExamsAverage = (array) => {
 
 const resultAllExamsAverage = console.log(allExamsAverage(exams));
 
-//! ----------------------------------------------------------------NO LO ENTIENDO
-
 // **Iteración #8: Bonus**
 
 // Dado el siguiente javascript filtra los videojuegos por gender = 'RPG' usando
@@ -421,8 +419,8 @@ const rpgGames = videogames.filter((videogame) =>
 );
 console.log(rpgGames);
 
-const rpgGamesAverageScore = rpgGames.reduce(
-  (acc, videogame) => acc + videogame.score,
-  0
-);
-return rpgGamesAverageScore / rpgGames.length;
+const rpgSumScores =
+  rpgGames.reduce((acc, videogame) => acc + videogame.score, 0) /
+  rpgGames.length;
+
+console.log(rpgSumScores);

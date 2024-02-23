@@ -8,15 +8,16 @@ const enumTraining = [
   "head up",
   "head down",
 ];
+const enumRating = [1, 2, 3, 4, 5];
 
-const enumOk = (array, word) => {
-  console.log(array, word);
+const enumOk = (array, index) => {
+  console.log(array, index);
 
   switch (array) {
     case "enumGender":
-      if (enumGender.includes(word)) {
+      if (enumGender.includes(index)) {
         console.log("entro en el true");
-        return { check: true, word };
+        return { check: true, index };
       } else {
         return {
           check: false,
@@ -24,10 +25,20 @@ const enumOk = (array, word) => {
       }
       break;
     case "enumTraining":
-      console.log(array, word);
-      if (enumTraining.includes(word)) {
+      console.log(array, index);
+      if (enumTraining.includes(index)) {
         console.log("entro en el true");
-        return { check: true, word };
+        return { check: true, index };
+      } else {
+        return {
+          check: false,
+        };
+      }
+      break;
+    case "enumRating":
+      if (enumRating.includes(index)) {
+        console.log("entro en el true");
+        return { check: true, index };
       } else {
         return {
           check: false,
